@@ -1,0 +1,5 @@
+*.tar.gz
+*.partial
+*.log
+.env
+restore/

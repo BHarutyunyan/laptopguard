@@ -1,0 +1,16 @@
+# Not backed up: the backups themselves, and things that rebuild or reinstall.
+$HOME/Backups
+$HOME/.cache
+$HOME/snap
+$HOME/.venv
+$HOME/.local/share/Trash
+$HOME/.zoom
+.config/*/Cache
+.config/*/Code Cache
+.config/*/GPUCache
+.config/*/*/Cache
+.config/*/*/Code Cache
+.config/*/*/GPUCache
+.config/*/*/Service Worker/CacheStorage
+node_modules
+__pycache__
