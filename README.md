@@ -19,7 +19,7 @@ Each backup stores only what changed, and every snapshot restores as a complete 
 ## Install
 
 ```bash
-git clone https://github.com/BHarutyunyan/laptopguard.git
+git clone https://github.com/YOUR-USERNAME/laptopguard.git
 cd laptopguard
 chmod +x backup.sh security-check.sh
 ```

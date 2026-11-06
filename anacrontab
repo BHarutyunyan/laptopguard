@@ -1,0 +1,8 @@
+# Runs each job once a day, soon after the laptop is on. Missed days catch up.
+# Fields: days between runs, minutes to wait, job name, command.
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+REMOTE_REPO=rclone:gdrive:laptopguard-backups
+
+1 5 laptopguard-backup $HOME/Github/laptopguard/backup.sh >> $HOME/laptopguard.log 2>&1
+1 10 laptopguard-security $HOME/Github/laptopguard/security-check.sh >> $HOME/laptopguard.log 2>&1

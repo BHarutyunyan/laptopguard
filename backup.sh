@@ -35,6 +35,9 @@ backup_to() {
         restic -r "$repo" init > /dev/null || return 1
     fi
 
+    # A run stopped by a shutdown leaves a lock behind. This removes only such stale locks.
+    restic -r "$repo" unlock --quiet || return 1
+
     restic -r "$repo" backup --quiet --exclude-file "$EXCLUDE_FILE" "$SOURCE_DIR"
     local result=$?
     # Code 3 means the backup finished but some files, such as locked ones, could not be read.
