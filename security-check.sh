@@ -52,12 +52,13 @@ fi
 
 echo
 echo "== New user accounts =="
-current="$(cut -d: -f1 "$PASSWD_FILE" | sort)"
+# LC_ALL=C gives sort and comm the same byte order on every system.
+current="$(cut -d: -f1 "$PASSWD_FILE" | LC_ALL=C sort)"
 if [[ ! -f "$BASELINE" ]]; then
     printf '%s\n' "$current" > "$BASELINE"
     echo "First run: saved $(wc -l < "$BASELINE") accounts as the baseline."
 else
-    new_users="$(comm -13 "$BASELINE" <(printf '%s\n' "$current"))"
+    new_users="$(LC_ALL=C comm -13 <(LC_ALL=C sort "$BASELINE") <(printf '%s\n' "$current"))"
     if [[ -z "$new_users" ]]; then
         echo "None."
     else
