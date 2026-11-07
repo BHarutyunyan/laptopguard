@@ -1,0 +1,21 @@
+#!/bin/sh
+# n8n-export: save every n8n workflow as its own JSON file, once a day.
+# Installed as /etc/cron.daily/n8n-export (root-owned), so anacron runs it daily
+# and catches up after the laptop was off. It needs root because talking to
+# Docker equals root access; my user is on purpose not in the "docker" group.
+# The files land in the n8n data folder inside my home, so backup.sh includes them.
+set -eu
+CONTAINER="${CONTAINER:-n8n}"
+OUT=/home/node/.n8n/workflows-export   # path inside the container (= ~/n8n-data/workflows-export)
+
+if ! docker container inspect "$CONTAINER" > /dev/null 2>&1; then
+	echo "n8n-export: no container named $CONTAINER, nothing to do"
+	exit 0
+fi
+docker start "$CONTAINER" > /dev/null
+docker exec -u node "$CONTAINER" sh -c "rm -rf '$OUT' && mkdir -p '$OUT'"
+if docker exec -u node "$CONTAINER" n8n export:workflow --all --separate --output="$OUT/" > /dev/null 2>&1; then
+	echo "n8n-export: $(docker exec -u node "$CONTAINER" sh -c "ls '$OUT' | wc -l") workflows exported"
+else
+	echo "n8n-export: no workflows to export yet"
+fi
